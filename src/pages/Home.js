@@ -1,9 +1,10 @@
 import React from "react";
-
+import Video from "../components/Video";
+import CreateRoom from "../components/CreateRoom";
 const Home = () => {
   return (
     <div>
-      <h3>홈입니다.</h3>
+      <CreateRoom />
     </div>
   );
 };
