@@ -6,13 +6,14 @@ import { setCookie } from "../shared/Cookie";
 const KakaoOauth = () => {
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
-
+  console.log(code);
   useEffect(() => {
     apis
       .kakaoLogin(code)
       .then((response) => {
-        // console.log(response);
+        console.log(response.data);
         const address = response.data.address;
+        console.log(response);
         setCookie("userId", response.data.userId);
         // let profileImg = encodeURIComponent(response.data.profileImg);
         // setCookie("userImg", profileImg);

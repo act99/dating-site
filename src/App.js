@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/" exact component={Home} />
         <Route path="/login" exact component={Login} />
         <Route
-          path="/oauth/callback/kakao"
+          path="/user/kakao/callback/"
           exact
           component={KakaoOauth}
         ></Route>
