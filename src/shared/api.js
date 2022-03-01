@@ -4,7 +4,7 @@ const tokenCheck = document.cookie;
 const token = tokenCheck.split("=")[1];
 const api = axios.create({
   // 실제 베이스 유알엘
-  baseURL: "https://3.38.252.235",
+  baseURL: "https://3.38.252.235:8080",
   // baseURL: "http://13.125.206.220:8080",
   // baseURL: "http://3.36.71.110",
   // baseURL: "http://52.78.96.234:8080",
