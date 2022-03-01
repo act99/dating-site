@@ -7,10 +7,12 @@ const api = axios.create({
   baseURL: "http://13.125.206.220:8080",
   // baseURL: "http://3.36.71.110",
   // baseURL: "http://52.78.96.234:8080",
+
+  //테스트용 url
+  // baseURL: "http://52.78.96.234:8080"
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    // accept: "application/json,",
     token: token,
   },
 });
@@ -22,6 +24,8 @@ api.interceptors.request.use(function (config) {
 });
 
 export const apis = {
+  kakaoLogin: (code) => api.get(`/user/kakao/callback?code=${code}`),
+
   login: (id, pwd) => api.post("/user/login", { username: id, password: pwd }),
   signup: (id, nickname, pwd, passwordcheck) =>
     api.post("/user/signup", {
