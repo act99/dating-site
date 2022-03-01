@@ -16,10 +16,10 @@ const App = () => {
         <Route path="/" exact component={Home} />
         <Route path="/login" exact component={Login} />
         <Route
-                path="/oauth/callback/kakao"
-                exact
-                component={KakaoOauth}
-              ></Route>
+          path="/oauth/callback/kakao"
+          exact
+          component={KakaoOauth}
+        ></Route>
         {/* <Route path="/login" exact component={Login} /> */}
       </ConnectedRouter>
     </>

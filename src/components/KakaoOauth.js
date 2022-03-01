@@ -31,9 +31,7 @@ const KakaoOauth = () => {
       });
   }, []);
 
-  return (
-      <p>테스트 로딩중</p>
-  );
+  return <p>테스트 로딩중</p>;
 };
 
 export default KakaoOauth;
