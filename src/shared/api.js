@@ -25,7 +25,7 @@ api.interceptors.request.use(function (config) {
 });
 
 export const apis = {
-  kakaoLogin: (code) => api.get(`/user/kakao/callback?code=${code}`),
+  kakaoLogin: (code) => api.get(`/oauth/kakao/callback?code=${code}`),
 
   login: (id, pwd) => api.post("/user/login", { username: id, password: pwd }),
   signup: (id, nickname, pwd, passwordcheck) =>
