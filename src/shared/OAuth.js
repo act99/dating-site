@@ -1,7 +1,7 @@
 const CLIENT_ID = "dbf70dbcc152160d45ec6ce156a6c37e";
 const REDIRECT_URI =
 //   "https://skifriend.shop/user/kakao/callback";
-  "http://localhost:3000/user/kakao/callback";
+  "http://3.38.252.235/oauth/kakao/callback";
 
 // const REDIRECT_URI_PRO =
 //   "https://skifriend.shop/user/kakao/callback/properties";
