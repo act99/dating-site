@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { actionCreators as userActions } from "../redux/modules/userReducer";
 const tokenCheck = document.cookie;
 const token = tokenCheck.split("=")[1];
 const api = axios.create({
@@ -13,7 +13,7 @@ const api = axios.create({
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    token: token,
+    authorization: token,
   },
 });
 
@@ -24,5 +24,10 @@ api.interceptors.request.use(function (config) {
 });
 
 export const apis = {
+  // ** 카카오 로그인
   kakaoLogin: (code) => api.get(`/user/kakao/callback?code=${code}`),
+  getUserInfo: () => api.post(`/chat/user`),
+  // ** 영상채팅
+  getRooms: () => api.get(`/chat/rooms`),
+  createRooms: (name) => api.post(`/chat/room`, name),
 };

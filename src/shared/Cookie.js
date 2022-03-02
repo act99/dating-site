@@ -2,10 +2,11 @@ const getCookie = (name) => {
   let value = ";" + document.cookie;
 
   let parts = value.split(`; ${name}=`);
-
   if (parts.length === 2) {
     return parts.pop().split(";").shift();
   }
+  let token = parts[0].split("=")[1];
+  return token;
 };
 
 const setCookie = (name, value, exp = 3) => {

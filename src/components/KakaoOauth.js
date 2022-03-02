@@ -1,22 +1,11 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { apis } from "../shared/api";
-import { setCookie } from "../shared/Cookie";
-
+import { actionCreators as userActions } from "../redux/modules/userReducer";
+import { useDispatch } from "react-redux";
 const KakaoOauth = () => {
-  const history = useHistory();
-  // 인가코드
-
+  const dispatch = useDispatch();
   useEffect(() => {
     let code = new URL(window.location.href).searchParams.get("code");
-    const kakaoLogin = async () => {
-      await apis.kakaoLogin(code).then((res) => {
-        setCookie("token", res.headers.authorization);
-        localStorage.setItem("userId", res.data);
-        history.replace("/");
-      });
-    };
-    kakaoLogin();
+    dispatch(userActions.kakaoLoginDB(code));
   }, []);
 
   return <p>테스트 로딩중</p>;

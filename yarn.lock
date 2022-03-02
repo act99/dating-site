@@ -8096,7 +8096,7 @@
   "resolved" "https://registry.npmjs.org/slash/-/slash-4.0.0.tgz"
   "version" "4.0.0"
 
-"sockjs-client@^1.4.0", "sockjs-client@^1.5.0", "sockjs-client@^1.5.2":
+"sockjs-client@^1.4.0", "sockjs-client@^1.5.0", "sockjs-client@^1.6.0":
   "integrity" "sha512-qVHJlyfdHFht3eBFZdKEXKTlb7I4IV41xnVNo8yUKA1UHcPJwgW2SvTq9LhnjjCywSkSK7c/e4nghU0GOoMCRQ=="
   "resolved" "https://registry.npmjs.org/sockjs-client/-/sockjs-client-1.6.0.tgz"
   "version" "1.6.0"
