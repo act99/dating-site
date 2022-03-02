@@ -5,8 +5,6 @@ import { ConnectedRouter } from "connected-react-router";
 import { history } from "./redux/store";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import LoginCont from "./components/LoginCont";
-import { KAKAO_AUTH_URL } from "./shared/OAuth";
 import KakaoOauth from "./components/KakaoOauth";
 
 const App = () => {
