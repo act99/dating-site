@@ -26,6 +26,7 @@ api.interceptors.request.use(function (config) {
 export const apis = {
   // ** 카카오 로그인
   kakaoLogin: (code) => api.get(`/user/kakao/callback?code=${code}`),
+  getUserInfo: () => api.post(`/chat/user`),
   // ** 영상채팅
   getRooms: () => api.get(`/chat/rooms`),
   createRooms: (name) => api.post(`/chat/room`, name),

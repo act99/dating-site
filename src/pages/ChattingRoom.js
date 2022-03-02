@@ -35,22 +35,24 @@ const ChattingRoom = () => {
     // sender: "",
     type: "TALK",
     roomId: "",
-    roomName: "",
+    // roomName: "",
     message: "",
-    messages: [],
+    // messages: [],
     // token: "",
-    userCount: 0,
+    // userCount: null,
   });
+  // const [receiveData, setReceiveData] = React.useState(second)
 
-  const sendMessage = (type) => {
-    ws.send(
-      `/pub/chat/message`,
-      { Authorization: token + "" },
-      JSON.stringify({ type: type, ...data }),
-      setData({ ...data, message: "" })
-    );
-  };
+  // const sendMessage = (type) => {
+  //   ws.send(
+  //     `/pub/chat/message`,
+  //     { Authorization: token + "" },
+  //     JSON.stringify({ type: type, ...data }),
+  //     setData({ ...data, message: "" })
+  //   );
+  // };
   const recvMessage = (recv) => {
+    console.log(recv);
     setData({
       ...data,
       userCount: recv.userCount,
@@ -73,7 +75,7 @@ const ChattingRoom = () => {
   };
 
   React.useEffect(() => {
-    setData({ ...data, roomId: roomId, roomName: roomName });
+    setData({ ...data, roomId: roomId });
     console.log(item);
     console.log(token);
     created();

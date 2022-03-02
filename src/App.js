@@ -10,10 +10,15 @@ import Rooms from "./pages/Rooms";
 import ChattingRoom from "./pages/ChattingRoom";
 import { actionCreators as userActions } from "./redux/modules/userReducer";
 import { useDispatch } from "react-redux";
+import { apis } from "./shared/api";
 const App = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(userActions.login());
+    // apis
+    //   .getUserInfo()
+    //   .then((res) => console.log(res.data))
+    //   .catch((error) => console.log(error));
+    dispatch(userActions.userinfoDB());
   }, []);
 
   return (
