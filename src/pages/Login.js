@@ -1,9 +1,18 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { KAKAO_AUTH_URL } from "../shared/OAuth.js";
-
+import { actionCreators as userActions } from "../redux/modules/userReducer.js";
+import { useHistory } from "react-router-dom";
 const Login = (props) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const kakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
+  };
+  const logout = () => {
+    dispatch(userActions.logout());
+    history.replace("/");
+    history.go(0);
   };
 
   return (
@@ -15,6 +24,9 @@ const Login = (props) => {
             width="222"
           />
         </a>
+      </div>
+      <div>
+        <button onClick={logout}>로그아웃</button>
       </div>
     </div>
   );

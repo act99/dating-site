@@ -2,10 +2,14 @@ import { connectRouter } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
+import roomReducer from "./modules/roomReducer";
+import userReducer from "./modules/userReducer";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   router: connectRouter(history),
+  roomReducer: roomReducer,
+  userReducer: userReducer,
 });
 
 const middlewares = [thunk.withExtraArgument({ history: history })];
