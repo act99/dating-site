@@ -74,10 +74,19 @@ export default handleActions(
     [LOG_IN]: (state, action) =>
       produce(state, (draft) => {
         console.log(action.payload);
-        draft.user = { ...action.payload.user }; //유저정보
-        draft.user.is_login = true; //로그인상태
-        draft.user.token = getCookie("token");
-        // draft.token = getCookie()
+        draft.user = {
+          ageRange: action.payload.user.ageRange,
+          career: action.payload.user.career,
+          gender: action.payload.user.gender,
+          id: action.payload.user.id,
+          nickname: action.payload.user.nickname,
+          phoneNum: action.payload.user.phoneNum,
+          profileImg: action.payload.user.profileImg,
+          selfIntro: action.payload.user.selfIntro,
+          username: action.payload.user.username,
+          is_login: true,
+          token: getCookie("token"),
+        }; //유저정보
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
