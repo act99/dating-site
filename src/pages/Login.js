@@ -1,5 +1,4 @@
 import React from "react";
-import LoginCont from "../components/LoginCont.js";
 import { KAKAO_AUTH_URL } from "../shared/OAuth.js";
 
 const Login = (props) => {
@@ -9,7 +8,14 @@ const Login = (props) => {
 
   return (
     <div>
-      <LoginCont onClick={kakaoLogin} />
+      <div>
+        <a id="custom-login-btn" onClick={kakaoLogin}>
+          <img
+            src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
+            width="222"
+          />
+        </a>
+      </div>
     </div>
   );
 };

@@ -18,7 +18,6 @@ const App = () => {
           exact
           component={KakaoOauth}
         ></Route>
-        {/* <Route path="/login" exact component={Login} /> */}
       </ConnectedRouter>
     </>
   );
