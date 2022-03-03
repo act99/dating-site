@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./redux/store";
 import Home from "./pages/Home";
@@ -12,6 +12,7 @@ import { actionCreators as userActions } from "./redux/modules/userReducer";
 import { useDispatch } from "react-redux";
 import { apis } from "./shared/api";
 import NavBar from "./components/NavBar";
+import NotFound from "./pages/NotFound";
 const App = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -24,12 +25,15 @@ const App = () => {
     <>
       <NavBar />
       <ConnectedRouter history={history}>
-        <Route path="/" exact component={Home} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/user/kakao/callback/" exact component={KakaoOauth} />
-        {/* 채팅방 입장 */}
-        <Route path="/rooms" exact component={Rooms} />
-        <Route path="/rooms/:roomId" exact component={ChattingRoom} />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/user/kakao/callback/" exact component={KakaoOauth} />
+          {/* 채팅방 입장 */}
+          <Route path="/rooms" exact component={Rooms} />
+          <Route path="/rooms/:roomId" exact component={ChattingRoom} />
+          <Route path="*" exact component={NotFound} />
+        </Switch>
       </ConnectedRouter>
     </>
   );
