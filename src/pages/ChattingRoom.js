@@ -1,17 +1,56 @@
+import {
+  Avatar,
+  Divider,
+  Fab,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { head } from "lodash";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import SendIcon from "@mui/icons-material/Send";
+import { makeStyles } from "@mui/styles";
+
 // let sockJS = new SockJS("http://52.78.96.234:8080/ws");
 // ** 배포 시
 // let sockJS = new SockJS("https://52.78.96.234:8080/wss");
+
+// ** ui
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+  chatSection: {
+    width: "100%",
+    height: "80vh",
+  },
+  headBG: {
+    backgroundColor: "#e0e0e0",
+  },
+  borderRight500: {
+    borderRight: "1px solid #e0e0e0",
+  },
+  messageArea: {
+    height: "70vh",
+    overflowY: "auto",
+  },
+});
 
 const tokenCheck = document.cookie;
 const token = tokenCheck.split("=")[1];
 
 const ChattingRoom = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   // ** params 로 받은 roomId 와 roomName
@@ -77,6 +116,7 @@ const ChattingRoom = () => {
       ws.connect(
         { Authorization: token },
         (frame) => {
+          console.log("hi");
           ws.subscribe(
             `/chat/room/enter/${roomId}`,
             (message) => {
@@ -110,16 +150,86 @@ const ChattingRoom = () => {
   }, []);
 
   return (
-    <div>
-      <h3>ChattingRoom</h3>
-      <input value={sendMessage.message} onChange={sendingMessageHandler} />
-      <button onClick={sendingMessage}>전송버튼</button>
-      <ul>
-        {receivedMessage.map((item, index) => (
-          <li>{item.message}</li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <div>
+        <Grid container className={classes.chatSection}>
+          <Grid item xs={9}>
+            <List className={classes.messageArea}>
+              <ListItem key="1">
+                <Grid container>
+                  <Grid item xs={12}>
+                    <ListItemText
+                      align="right"
+                      primary="Hey man, What's up ?"
+                    ></ListItemText>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ListItemText
+                      align="right"
+                      secondary="09:30"
+                    ></ListItemText>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem key="2">
+                <Grid container>
+                  <Grid item xs={12}>
+                    <ListItemText
+                      align="left"
+                      primary="Hey, Iam Good! What about you ?"
+                    ></ListItemText>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ListItemText align="left" secondary="09:31"></ListItemText>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem key="3">
+                <Grid container>
+                  <Grid item xs={12}>
+                    <ListItemText
+                      align="right"
+                      primary="Cool. i am good, let's catch up!"
+                    ></ListItemText>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ListItemText
+                      align="right"
+                      secondary="10:30"
+                    ></ListItemText>
+                  </Grid>
+                </Grid>
+              </ListItem>
+            </List>
+            <Divider />
+            <Grid container style={{ padding: "20px" }}>
+              <Grid item xs={11}>
+                <TextField
+                  id="outlined-basic-email"
+                  label="Type Something"
+                  fullWidth
+                />
+              </Grid>
+              <Grid xs={1} align="right">
+                <Fab color="primary" aria-label="add">
+                  <SendIcon />
+                </Fab>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+      <div>
+        <h3>ChattingRoom</h3>
+        <input value={sendMessage.message} onChange={sendingMessageHandler} />
+        <button onClick={sendingMessage}>전송버튼</button>
+        <ul>
+          {receivedMessage.map((item, index) => (
+            <li>{item.message}</li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 };
 

@@ -11,8 +11,16 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { useHistory } from "react-router-dom";
+import { history } from "../redux/store";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = [
+  ["홈", "/"],
+  ["스토리", "/story"],
+  ["LIVE NOW", "/livenow"],
+  ["로그인", "/login"],
+  ["방 만들기", "/rooms"],
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const NavBar = () => {
@@ -33,20 +41,24 @@ const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  // const history = useHistory();
+  const handleNavigate = (target) => {
+    history.push(target);
+  };
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "black" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+          <Button
+            onClick={() => history.push("/")}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              backgroundColor: "white",
+            }}
           >
-            LOGO
-          </Typography>
-
+            Logo
+          </Button>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -77,8 +89,8 @@ const NavBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page[0]} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page[0]}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -94,11 +106,13 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page[1]}
+                onClick={() => {
+                  handleNavigate(page[1]);
+                }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page[0]}
               </Button>
             ))}
           </Box>
