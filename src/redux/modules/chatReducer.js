@@ -5,6 +5,7 @@ import { produce } from "immer";
 // actions
 const GET_CHAT = "GET_CHAT";
 const SEND_CHAT = "SEND_CHAT";
+const CLEAR_CHAT = "CLEAR_CHAT";
 // action creators
 
 const getChat = createAction(GET_CHAT, (chat) => ({ chat }));
