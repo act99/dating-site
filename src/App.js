@@ -11,18 +11,18 @@ import ChattingRoom from "./pages/ChattingRoom";
 import { actionCreators as userActions } from "./redux/modules/userReducer";
 import { useDispatch } from "react-redux";
 import { apis } from "./shared/api";
+import NavBar from "./components/NavBar";
 const App = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
-    // apis
-    //   .getUserInfo()
-    //   .then((res) => console.log(res.data))
-    //   .catch((error) => console.log(error));
-    dispatch(userActions.userinfoDB());
+    if (document.cookie) {
+      dispatch(userActions.userinfoDB());
+    }
   }, []);
 
   return (
     <>
+      <NavBar />
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Home} />
         <Route path="/login" exact component={Login} />

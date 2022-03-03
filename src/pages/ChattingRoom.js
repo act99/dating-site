@@ -1,6 +1,6 @@
 import { head } from "lodash";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
@@ -13,16 +13,22 @@ const token = tokenCheck.split("=")[1];
 
 const ChattingRoom = () => {
   const dispatch = useDispatch();
-  const [connected, setConnected] = React.useState(false);
+
   // ** params 로 받은 roomId 와 roomName
-  //   const params = useParams();
-  //   const roomId = params.roomId;
   const location = useLocation();
-  const item = location.state;
-  const roomName = item.roomName;
-  const roomId = item.roomId;
+  const locationState = location.state;
+  const roomName = locationState.roomName;
+  const roomId = locationState.roomId;
+
+  // ** user 정보
+  const user = useSelector((state) => state.userReducer.user);
+  const nickname = user.nickname;
+  const username = user.username;
+
+  // ** 채팅 ref
   const chatRef = React.useRef();
 
+  // ** SockJS 설정
   const sock = new SockJS("http://52.78.96.234:8080/ws-stomp");
   let options = {
     debug: true,
@@ -30,57 +36,42 @@ const ChattingRoom = () => {
     protocols: Stomp.VERSIONS.supportedVersions(),
   };
   const ws = Stomp.over(sock, options);
-  // ** params 로 받은 roomId 와 roomName 끝
-  const [data, setData] = React.useState({
-    // sender: "",
+
+  // ** 메시지 보내기 위한 핸들러
+  const [sendMessage, setSendMessage] = React.useState({
     type: "TALK",
     roomId: "",
-    // roomName: "",
+    sender: "",
     message: "",
-    // messages: [],
-    // token: "",
-    // userCount: null,
+    userCount: 0,
   });
-  // const [receiveData, setReceiveData] = React.useState(second)
-
-  // const sendMessage = (type) => {
-  //   ws.send(
-  //     `/pub/chat/message`,
-  //     { Authorization: token + "" },
-  //     JSON.stringify({ type: type, ...data }),
-  //     setData({ ...data, message: "" })
-  //   );
-  // };
-  const recvMessage = (recv) => {
-    console.log(recv);
-    setData({
-      ...data,
-      userCount: recv.userCount,
-      messages: [
-        { type: recv.type, sender: recv.sender, message: recv.message },
-        ...data.messages,
-      ],
-    });
-  };
+  // input값 핸들러
   const sendingMessageHandler = (event) => {
-    setData({ ...data, message: event.target.value });
+    setSendMessage({ ...sendMessage, message: event.target.value });
   };
-  const sendHandler = (type) => {
+  // 메시지 보내기 핸들러
+  const sendingMessage = () => {
+    setSendMessage({ ...sendMessage, type: "TALK" });
     ws.send(
       `/pub/chat/message`,
       { Authorization: token },
-      JSON.stringify({ ...data }),
-      setData({ ...data, message: "" })
+      JSON.stringify({ ...sendMessage }),
+      setSendMessage({ ...sendMessage, message: "" })
     );
   };
-
-  React.useEffect(() => {
-    setData({ ...data, roomId: roomId });
-    console.log(item);
-    console.log(token);
-    created();
-  }, []);
-
+  // ** receive
+  const [receivedMessage, setReceivedMessage] = React.useState([]);
+  // const recvMessage = (recv) => {
+  //   console.log(recv);
+  //   setData({
+  //     ...data,
+  //     userCount: recv.userCount,
+  //     messages: [
+  //       { type: recv.type, sender: recv.sender, message: recv.message },
+  //       ...data.messages,
+  //     ],
+  //   });
+  // };
   const created = () => {
     try {
       ws.connect(
@@ -89,26 +80,45 @@ const ChattingRoom = () => {
           ws.subscribe(
             `/chat/room/enter/${roomId}`,
             (message) => {
+              console.log(message);
               let recv = JSON.parse(message.body);
-              recvMessage(recv);
+              setReceivedMessage([recv, ...receivedMessage]);
+              console.log("Receive 데이터" + recv);
+              // recvMessage(recv);
             },
             { Authorization: token }
           );
         },
         (error) => {
-          console.log("서버연결 실패");
+          console.log("서버연결 실패", error);
         }
       );
     } catch (error) {
       console.log(error);
     }
   };
+  const disconnected = () => {
+    if (ws !== null) {
+      ws.disconnect();
+      console.log("연결 종료");
+    }
+  };
+  React.useEffect(() => {
+    setSendMessage({ ...sendMessage, roomId: roomId, sender: nickname });
+    created();
+    return () => disconnected();
+  }, []);
 
   return (
     <div>
       <h3>ChattingRoom</h3>
-      <input value={data.message} onChange={sendingMessageHandler} />
-      <button onClick={sendHandler}>전송버튼</button>
+      <input value={sendMessage.message} onChange={sendingMessageHandler} />
+      <button onClick={sendingMessage}>전송버튼</button>
+      <ul>
+        {receivedMessage.map((item, index) => (
+          <li>{item.message}</li>
+        ))}
+      </ul>
     </div>
   );
 };
