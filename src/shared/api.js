@@ -7,9 +7,9 @@ const api = axios.create({
   // 강욱님
   // baseURL: "https://3.38.252.235:8080",
   // 건욱님
-  baseURL: "http://52.78.96.234:8080",
+  // baseURL: "http://52.78.96.234:8080",
   // 건욱님
-  // baseURL: "https://goonzu.shop",
+  baseURL: "https://goonzu.shop",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",

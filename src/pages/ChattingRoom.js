@@ -34,9 +34,9 @@ const ChattingRoom = () => {
   const nickname = user.nickname;
 
   // ** SockJS 설정
-  const sock = new SockJS("http://52.78.96.234:8080/ws-stomp");
+  // const sock = new SockJS("http://52.78.96.234:8080/ws-stomp");
   // ** 배포시
-  // let sock = new SockJS("https://52.78.96.234:8080/wss");
+  let sock = new SockJS("https://goonzu.shop/ws-stomp");
   let options = {
     debug: true,
     header: { Authorization: token },
@@ -113,13 +113,15 @@ const ChattingRoom = () => {
                  * 먼저 오퍼를 생성하고 이를 peerConnection 의 로컬 설명으로 설정합니다 .
                  * 그런 다음 제안 을 다른 피드의 로직을 자유롭게 구현할 수 있습니다.
                  */
-                // case "join":
-                //   log(
-                //     "Client is starting to " +
-                //       (message.data === "true)" ? "negotiate" : "wait for a peer")
-                //   );
-                //   handlePeerConnection(message);
-                //   break;
+                case "TALK":
+                  log(
+                    "Client is starting to " +
+                      (message.data === "true)"
+                        ? "negotiate"
+                        : "wait for a peer")
+                  );
+                  handlePeerConnection(message);
+                  break;
 
                 default:
                   handleErrorMessage("Wrong type message received from server");
@@ -172,7 +174,8 @@ const ChattingRoom = () => {
   let remoteVideoRef = React.useRef(null);
 
   const mediaConstraints = {
-    video: { width: { exact: 640 }, height: { exact: 480 } },
+    video: true,
+    // video: { width: { exact: 640 }, height: { exact: 480 } },
     audio: true,
   };
   const videoButtonOff = () => {
@@ -505,9 +508,10 @@ const ChattingRoom = () => {
       }
     }
   }
+  const gogoRef = React.useRef();
 
   React.useEffect(() => {
-    chattingRef.current.scrollIntoView({ behavior: "smooth" });
+    // chattingRef.current.scrollIntoView({ behavior: "smooth" });
     setSendMessage({ ...sendMessage, roomId: roomId, sender: nickname });
     created();
     return () => disconnected();
@@ -584,6 +588,8 @@ const ChattingRoom = () => {
           </Grid>
         </Grid>
         <div>
+          <h1>sdfjksldjf;k</h1>
+          <video autoPlay playsInline />
           <video ref={localVideoRef} autoPlay playsInline />
           <button onClick={videoBUttonOn}>비디오 온</button>
           <button onClick={videoButtonOff}>비디오 비디오 오프</button>
