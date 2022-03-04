@@ -6,7 +6,7 @@
 const BASE_URL = "https://goonzu.shop";
 const REDIRECT_URI =
   "https://chat.d8pzcrluuw660.amplifyapp.com/user/kakao/callback";
-const WEB_SOCKET = "https://goonzu.shop/ws-stomp";
+const WEB_SOCKET = "https://goonzu.shop/wss-stomp";
 
 const url = {
   BASE_URL,
