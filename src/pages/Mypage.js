@@ -10,7 +10,8 @@ import { Calendar } from '@fullcalendar/core';
 import momentPlugin from '@fullcalendar/moment'
 import { toMoment, toMomentDuration } from '@fullcalendar/moment';
 import React from 'react';
-
+import styled from "styled-components";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const events = [
   {
@@ -78,13 +79,12 @@ function FullCalendarApp(props) {
     }
   return (
     <>
-    <Grid margin="auto" width="900px">
+    <Grid margin="auto" width="900px" position= "relative">
       <FullCalendar
       height= '900px'
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         dayMaxEvents= {true} //일정 많아지면 +버튼 생성
-        // dayMaxEventRows="3"
         headerToolbar={{
             right: 'prev,next today',
             center: 'title',
@@ -100,13 +100,12 @@ function FullCalendarApp(props) {
 
         events={events}
         // editable="true" //드래그로 일정 변경 가능
-        // events= 'https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
-
-        // nowIndicator
         dateClick={dateClickHandler}
         eventClick={(e) => console.log(e.event.title)}
         locale="ko" //한국어변경
       />
+
+        <Write>test</Write>
     </Grid>
       {/* <Grid>
 
@@ -133,4 +132,19 @@ function FullCalendarApp(props) {
   );
 }
 
+
+const Write = styled.div`
+    width: 55px;
+    height: 55px;
+    background-color: rgb(255, 228, 228);
+    border-radius: 100%;
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    cursor: pointer;
+    z-index: 1;
+`;
+
 export default FullCalendarApp;
+
+
