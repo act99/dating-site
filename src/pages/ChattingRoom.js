@@ -92,11 +92,11 @@ const ChattingRoom = () => {
                 case "ENTER":
                   log(
                     "Client is starting to " +
-                      (message.data === "true)"
+                      (recv.active === "true)"
                         ? "negotiate"
                         : "wait for a peer")
                   );
-                  handlePeerConnection(message);
+                  handlePeerConnection(recv.active);
                   break;
 
                 default:
@@ -232,7 +232,7 @@ const ChattingRoom = () => {
     try {
       createPeerConnection();
       getMedia(mediaConstraints);
-      if (msg.data === "true") {
+      if (msg === "true") {
         myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
       }
     } catch (error) {
