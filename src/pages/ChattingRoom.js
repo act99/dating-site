@@ -68,51 +68,28 @@ const ChattingRoom = () => {
         (frame) => {
           console.log("hi");
           ws.subscribe(
+            { Authorization: token },
             `/sub/chat/room/${roomId}`,
             (message) => {
               let recv = JSON.parse(message.body);
               console.log(recv);
-              dispatch(chatActions.getChat(recv));
-
               switch (recv.type) {
-                // case "text":
-                //   log(
-                //     "Text message from " + message.from + " received: " + message.data
-                //   );
-                //   break;
-
+                case "TALK":
+                  log("채팅방 토크");
+                  dispatch(chatActions.getChat(recv));
+                  break;
                 case "OFFER":
                   log("Signal OFFER received");
                   handleOfferMessage(recv);
                   break;
-
-                /**
-                 * 그 후 다른 피어가 오퍼를 수신하면 이를 원격 설명으로 설정해야합니다 .
-                 * 또한 응답을 생성해야 하며 이는 시작 피어로 전송됩니다.
-                 */
                 case "ANSWER":
                   log("Signal ANSWER received");
                   handleAnswerMessage(recv);
                   break;
-
-                /**
-                 * WebRTC는 ICE (Interactive Connection Establishment) 프로토콜을
-                 * 사용하여 피어를 검색하고 연결을 설정합니다.
-                 *
-                 * peerConnection 에 로컬 설명을 설정하면 icecandidate 이벤트가 트리거됩니다 .
-                 * 이 이벤트는 원격 피어가 원격 후보 세트에 후보를 추가 할 수 있도록 후보를 원격 피어로 전송해야합니다.
-                 * 이를 위해 onicecandidate 이벤트에 대한 리스너를 만듭니다 .
-                 */
                 case "ICE":
                   log("Signal ICE Candidate received");
                   handleNewICECandidateMessage(recv);
                   break;
-
-                /**어 에게 보냅니다
-                 * 서버 측 기술로 send 메소
-                 * 먼저 오퍼를 생성하고 이를 peerConnection 의 로컬 설명으로 설정합니다 .
-                 * 그런 다음 제안 을 다른 피드의 로직을 자유롭게 구현할 수 있습니다.
-                 */
                 case "ENTER":
                   log(
                     "Client is starting to " +
@@ -128,8 +105,7 @@ const ChattingRoom = () => {
               }
 
               // recvMessage(recv);
-            },
-            { Authorization: token }
+            }
           );
         },
         (error) => {
@@ -242,10 +218,6 @@ const ChattingRoom = () => {
       console.log(error);
     }
   }
-  function handleTrackEvent(event) {
-    log("Track Event: set stream to remote video element");
-    remoteVideoRef.current.srcObject = event.streams[0];
-  }
 
   const createPeerConnection = async () => {
     try {
@@ -299,21 +271,6 @@ const ChattingRoom = () => {
 
     stop();
   };
-
-  async function handleICECandidateEvent(event) {
-    try {
-      if (event.candidate) {
-        sendToServer({
-          from: nickname,
-          type: "ICE",
-          candidate: event.candidate,
-        });
-        log("ICE Candidate Event: ICE candidate sent");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   async function handleTrackEvent(event) {
     try {
@@ -452,17 +409,17 @@ const ChattingRoom = () => {
   //   }
   // );
 
-  function start() {
-    // add an event listener for a message being received
+  // function start() {
+  //   // add an event listener for a message being received
 
-    ws.subscribe(
-      `/sub/chat/room/${roomId}`,
-      (msg) => {
-        let message = JSON.parse(msg.data);
-      },
-      { Authorization: token }
-    );
-  }
+  //   ws.subscribe(
+  //     `/sub/chat/room/${roomId}`,
+  //     (msg) => {
+  //       let message = JSON.parse(msg.data);
+  //     },
+  //     { Authorization: token }
+  //   );
+  // }
   function stop() {
     // send a message to the server to remove this client from the room clients list
     log("Send 'leave' message to server");

@@ -8,13 +8,13 @@ const api = axios.create({
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    authorization: token,
+    Authorization: token,
   },
 });
 
 api.interceptors.request.use(function (config) {
   const accessToken = document.cookie.split("=")[1];
-  config.headers.common["authorization"] = `${accessToken}`;
+  config.headers.common["Authorization"] = `${accessToken}`;
   return config;
 });
 
