@@ -208,7 +208,7 @@ const ChattingRoom = () => {
     try {
       if (event.candidate) {
         sendToServer({
-          from: nickname,
+          sender: nickname,
           type: "ICE",
           candidate: event.candidate,
         });
@@ -291,7 +291,7 @@ const ChattingRoom = () => {
       .then(function () {
         console.log(myPeerConnection.localDescription);
         sendToServer({
-          from: nickname,
+          sender: nickname,
           type: "OFFER",
           sdp: myPeerConnection.localDescription,
         });
@@ -358,12 +358,11 @@ const ChattingRoom = () => {
            */
           log("Sending answer packet back to other peer");
           sendToServer({
-            from: nickname,
+            sender: nickname,
             type: "ANSWER",
             sdp: myPeerConnection.localDescription,
           });
         })
-        // .catch(handleGetUserMediaError);
         .catch(handleErrorMessage);
     }
   }
@@ -377,10 +376,6 @@ const ChattingRoom = () => {
       console.log(error);
     }
     log("The peer has accepted request");
-
-    // Configure the remote description, which is the SDP payload
-    // in our "video-answer" message.
-    // myPeerConnection.setRemoteDescription(new RTCSessionDescription(message.sdp)).catch(handleErrorMessage);
   }
 
   function handleNewICECandidateMessage(message) {
@@ -389,43 +384,12 @@ const ChattingRoom = () => {
     myPeerConnection.addIceCandidate(candidate).catch(handleErrorMessage);
   }
 
-  // ws.connect(
-  //   { Authorization: token },
-  //   (frame) => {
-  //     console.log("hi");
-  //     ws.subscribe(
-  //       `/sub/chat/room/${roomId}`,
-  //       (message) => {
-  //         let recv = JSON.parse(message.body);
-  //         console.log(recv);
-  //         dispatch(chatActions.getChat(recv));
-  //         // recvMessage(recv);
-  //       },
-  //       { Authorization: token }
-  //     );
-  //   },
-  //   (error) => {
-  //     console.log("서버연결 실패", error);
-  //   }
-  // );
-
-  // function start() {
-  //   // add an event listener for a message being received
-
-  //   ws.subscribe(
-  //     `/sub/chat/room/${roomId}`,
-  //     (msg) => {
-  //       let message = JSON.parse(msg.data);
-  //     },
-  //     { Authorization: token }
-  //   );
-  // }
   function stop() {
     // send a message to the server to remove this client from the room clients list
     log("Send 'leave' message to server");
     sendToServer({
-      from: nickname,
-      type: "leave",
+      sender: nickname,
+      type: "QUIT",
       data: roomId,
     });
 
@@ -467,10 +431,9 @@ const ChattingRoom = () => {
       }
     }
   }
-  const gogoRef = React.useRef();
 
   React.useEffect(() => {
-    // chattingRef.current.scrollIntoView({ behavior: "smooth" });
+    chattingRef.current.scrollIntoView({ behavior: "smooth" });
     setSendMessage({ ...sendMessage, roomId: roomId, sender: nickname });
     created();
     return () => disconnected();
