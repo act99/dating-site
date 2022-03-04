@@ -17,6 +17,7 @@ import useStyle from "../styles/chattingStyle";
 import { actionCreators as chatActions } from "../redux/modules/chatReducer";
 import { sendingMessage } from "../shared/SocketFunc";
 import url from "../shared/url";
+import { history } from "../redux/store";
 const tokenCheck = document.cookie;
 const token = tokenCheck.split("=")[1];
 
@@ -92,9 +93,7 @@ const ChattingRoom = () => {
                 case "ENTER":
                   log(
                     "Client is starting to " +
-                      (recv.active === "true)"
-                        ? "negotiate"
-                        : "wait for a peer")
+                      (recv.active === true ? "negotiate" : "wait for a peer")
                   );
                   handlePeerConnection(recv.active);
                   break;
@@ -119,6 +118,7 @@ const ChattingRoom = () => {
   const disconnected = () => {
     if (ws !== null) {
       ws.disconnect();
+
       console.log("연결 종료");
     }
   };
@@ -201,7 +201,7 @@ const ChattingRoom = () => {
   };
   const sendToServer = (msg) => {
     let msgJSON = JSON.stringify(msg);
-    ws.send(`/pub/chat/message`, { Authorization: token }, msgJSON);
+    ws.send(`/pub/chat/message/video`, { Authorization: token }, msgJSON);
   };
 
   async function handleICECandidateEvent(event) {
@@ -232,7 +232,7 @@ const ChattingRoom = () => {
     try {
       createPeerConnection();
       getMedia(mediaConstraints);
-      if (msg === "true") {
+      if (msg === true) {
         myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
       }
     } catch (error) {
@@ -405,7 +405,6 @@ const ChattingRoom = () => {
       myPeerConnection.onicegatheringstatechange = null;
       myPeerConnection.onnotificationneeded = null;
       myPeerConnection.onremovetrack = null;
-
       // Stop the videos
       if (remoteVideoRef.current.srcObject) {
         remoteVideoRef.current.srcObject
@@ -436,90 +435,107 @@ const ChattingRoom = () => {
     chattingRef.current.scrollIntoView({ behavior: "smooth" });
     setSendMessage({ ...sendMessage, roomId: roomId, sender: nickname });
     created();
-    return () => disconnected();
+    return () => {
+      disconnected();
+
+      history.go(0);
+    };
   }, [roomId]);
 
   return (
     <>
       <div>
-        <Grid container className={classes.chatSection}>
-          <Grid item xs={9}>
-            <List className={classes.messageArea}>
-              {chattingList.map((item, index) =>
-                item.sender === nickname ? (
-                  <ListItem key={index + "" + (item.id + "")}>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <ListItemText
-                          align="right"
-                          primary={item.message}
-                        ></ListItemText>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <ListItemText
-                          align="right"
-                          secondary="09:30"
-                        ></ListItemText>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                ) : (
-                  <ListItem key={index + "" + (item.id + "")}>
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <ListItemText
-                          align="left"
-                          primary={item.message}
-                        ></ListItemText>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <ListItemText
-                          align="left"
-                          secondary="09:31"
-                        ></ListItemText>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                )
-              )}
-              <div ref={chattingRef} />
-            </List>
-            <Divider />
-            <Grid container style={{ padding: "20px" }}>
-              <Grid item xs={11}>
-                <TextField
-                  id="outlined-basic-email"
-                  label="Type Something"
-                  fullWidth
-                  value={sendMessage.message}
-                  onChange={sendingMessageHandler}
-                />
-              </Grid>
-              <Grid item xs={1} align="right">
-                <Fab
-                  color="primary"
-                  aria-label="add"
-                  onClick={() => {
-                    sendingMessage(ws, setSendMessage, sendMessage, token);
-                  }}
-                >
-                  <SendIcon />
-                </Fab>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
         <div>
-          <h1>sdfjksldjf;k</h1>
-          <video autoPlay playsInline />
-          <video ref={localVideoRef} autoPlay playsInline />
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            width={200}
+            height={200}
+          />
+
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            playsInline
+            width={200}
+            height={200}
+          />
           <button onClick={videoBUttonOn}>비디오 온</button>
           <button onClick={videoButtonOff}>비디오 비디오 오프</button>
           <button onClick={audioButtonOn}>마이크 온</button>
           <button onClick={audioButtonOff}>마이크 오프</button>
           <button onClick={exitButton}>나가기</button>
-          <video ref={remoteVideoRef} autoPlay playsInline />
         </div>
+        <Grid container spacing={2}>
+          <Grid container className={classes.chatSection}>
+            <Grid item xs={10}>
+              <List className={classes.messageArea}>
+                {chattingList.map((item, index) =>
+                  item.sender === nickname ? (
+                    <ListItem key={index + "" + (item.id + "")}>
+                      <Grid container>
+                        <Grid item xs={12}>
+                          <ListItemText
+                            align="right"
+                            primary={item.message}
+                          ></ListItemText>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <ListItemText
+                            align="right"
+                            secondary="09:30"
+                          ></ListItemText>
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                  ) : (
+                    <ListItem key={index + "" + (item.id + "")}>
+                      <Grid container>
+                        <Grid item xs={12}>
+                          <ListItemText
+                            align="left"
+                            primary={item.message}
+                          ></ListItemText>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <ListItemText
+                            align="left"
+                            secondary="09:31"
+                          ></ListItemText>
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                  )
+                )}
+                <div ref={chattingRef} />
+              </List>
+              <Divider />
+              <Grid container style={{ padding: "20px" }}>
+                <Grid item xs={11}>
+                  <TextField
+                    id="outlined-basic-email"
+                    label="Type Something"
+                    fullWidth
+                    value={sendMessage.message}
+                    onChange={sendingMessageHandler}
+                  />
+                </Grid>
+                <Grid item xs={1} align="right">
+                  <Fab
+                    color="primary"
+                    aria-label="add"
+                    onClick={() => {
+                      sendingMessage(ws, setSendMessage, sendMessage, token);
+                    }}
+                  >
+                    <SendIcon />
+                  </Fab>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     </>
   );

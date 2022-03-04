@@ -15,6 +15,8 @@ import NotFound from "./pages/NotFound";
 import Container from "@mui/material/Container";
 import Room2 from "./components/Room2";
 import CreateRoom from "./pages/CreateRoom";
+import Story from "./pages/Story";
+
 const App = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -37,6 +39,7 @@ const App = () => {
             <Route path="/rooms/:roomId" exact component={ChattingRoom} />
             <Route path="/test" exact component={Room2} />
             <Route path="/createroom" exact component={CreateRoom} />
+            <Route path="/story" exact component={Story} />
             <Route path="*" exact component={NotFound} />
           </Switch>
         </ConnectedRouter>
