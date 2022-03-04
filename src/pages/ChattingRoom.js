@@ -34,9 +34,9 @@ const ChattingRoom = () => {
   const nickname = user.nickname;
 
   // ** SockJS 설정
-  // const sock = new SockJS("http://52.78.96.234:8080/ws-stomp");
+  const sock = new SockJS("http://52.78.96.234:8080/ws-stomp");
   // ** 배포시
-  let sock = new SockJS("https://goonzu.shop/ws-stomp");
+  // let sock = new SockJS("https://52.78.96.234:8080/wss");
   let options = {
     debug: true,
     header: { Authorization: token },
@@ -113,7 +113,7 @@ const ChattingRoom = () => {
                  * 먼저 오퍼를 생성하고 이를 peerConnection 의 로컬 설명으로 설정합니다 .
                  * 그런 다음 제안 을 다른 피드의 로직을 자유롭게 구현할 수 있습니다.
                  */
-                case "TALK":
+                case "ENTER":
                   log(
                     "Client is starting to " +
                       (message.data === "true)"
@@ -233,7 +233,7 @@ const ChattingRoom = () => {
       if (event.candidate) {
         sendToServer({
           from: nickname,
-          type: "ice",
+          type: "ICE",
           candidate: event.candidate,
         });
         log("ICE Candidate Event: ICE candidate sent");
