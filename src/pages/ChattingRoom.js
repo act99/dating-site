@@ -68,7 +68,6 @@ const ChattingRoom = () => {
         (frame) => {
           console.log("hi");
           ws.subscribe(
-            { Authorization: token },
             `/sub/chat/room/${roomId}`,
             (message) => {
               let recv = JSON.parse(message.body);
@@ -105,7 +104,8 @@ const ChattingRoom = () => {
               }
 
               // recvMessage(recv);
-            }
+            },
+            { Authorization: token }
           );
         },
         (error) => {
