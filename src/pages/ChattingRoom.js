@@ -16,6 +16,7 @@ import SendIcon from "@mui/icons-material/Send";
 import useStyle from "../styles/chattingStyle";
 import { actionCreators as chatActions } from "../redux/modules/chatReducer";
 import { sendingMessage } from "../shared/SocketFunc";
+import url from "../shared/url";
 const tokenCheck = document.cookie;
 const token = tokenCheck.split("=")[1];
 
@@ -34,9 +35,8 @@ const ChattingRoom = () => {
   const nickname = user.nickname;
 
   // ** SockJS 설정
-  const sock = new SockJS("http://52.78.96.234:8080/ws-stomp");
-  // ** 배포시
-  // let sock = new SockJS("https://52.78.96.234:8080/wss");
+  const sock = new SockJS(url.WEB_SOCKET);
+
   let options = {
     debug: true,
     header: { Authorization: token },
