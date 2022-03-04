@@ -18,7 +18,7 @@ const CreateRoom = () => {
         <SecondWrap>xs=8</SecondWrap>
       </Grid>
       <Grid item xs={12}>
-        <SecondWrap>xs=8</SecondWrap>
+        <SecondWrap></SecondWrap>
       </Grid>
     </Grid>
   );
