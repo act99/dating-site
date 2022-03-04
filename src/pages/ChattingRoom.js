@@ -225,7 +225,7 @@ const ChattingRoom = () => {
   };
   const sendToServer = (msg) => {
     let msgJSON = JSON.stringify(msg);
-    ws.send(msgJSON);
+    ws.send(`/pub/chat/message`, { Authorization: token }, msgJSON);
   };
 
   async function handleICECandidateEvent(event) {
@@ -328,9 +328,11 @@ const ChattingRoom = () => {
     myPeerConnection
       .createOffer()
       .then(function (offer) {
+        console.log(offer);
         return myPeerConnection.setLocalDescription(offer);
       })
       .then(function () {
+        console.log(myPeerConnection.localDescription);
         sendToServer({
           from: nickname,
           type: "OFFER",
