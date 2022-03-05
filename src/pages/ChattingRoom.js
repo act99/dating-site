@@ -18,7 +18,7 @@ import { actionCreators as chatActions } from "../redux/modules/chatReducer";
 import { sendingMessage } from "../shared/SocketFunc";
 import url from "../shared/url";
 import { history } from "../redux/store";
-import { apis } from "../shared/api";
+
 const tokenCheck = document.cookie;
 const token = tokenCheck.split("=")[1];
 

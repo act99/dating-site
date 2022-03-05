@@ -3,9 +3,11 @@ import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
 import UserVideoComponent from "./UserVideoComponent";
 import "../App.css";
+import url from "../shared/url";
 
-const OPENVIDU_SERVER_URL = "https://chat.d8pzcrluuw660.amplifyapp.com/";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const tokenCheck = document.cookie;
+const token = tokenCheck.split("=")[1];
+const OPENVIDU_SERVER_URL = url.BASE_URL;
 
 class VideoRoom extends Component {
   constructor(props) {
@@ -347,8 +349,7 @@ class VideoRoom extends Component {
       axios
         .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
-            Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+            Authorization: token,
             "Content-Type": "application/json",
           },
         })
@@ -397,8 +398,7 @@ class VideoRoom extends Component {
           data,
           {
             headers: {
-              Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+              Authorization: token,
               "Content-Type": "application/json",
             },
           }
