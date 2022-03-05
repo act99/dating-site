@@ -1,139 +1,161 @@
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import Grid from '../elements/Grid';
-import Datetime from 'react-datetime';
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import Grid from "../elements/Grid";
+import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
-import 'moment/locale/ko';
-import { Calendar } from '@fullcalendar/core';
-import momentPlugin from '@fullcalendar/moment'
-import { toMoment, toMomentDuration } from '@fullcalendar/moment';
-import React from 'react';
+import "moment/locale/ko";
+import { Calendar } from "@fullcalendar/core";
+import momentPlugin from "@fullcalendar/moment";
+import { toMoment, toMomentDuration } from "@fullcalendar/moment";
+import React from "react";
 import styled from "styled-components";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CalendarModal from '../components/CalendarModal';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CalendarModal from "../components/CalendarModal";
 
 const events = [
   {
     id: 1,
-    title: 'event 1',
-    start: '2022-03-17T13:00:00',
-    end: '2022-03-20T13:00:00',
+    title: "event 1",
+    start: "2022-03-17T13:00:00",
+    end: "2022-03-20T13:00:00",
   },
   {
     id: 2,
-    title: 'event 2',
-    start: '2022-03-16T13:00:00',
-    end: '2022-03-16T18:00:00',
+    title: "event 2",
+    start: "2022-03-16T13:00:00",
+    end: "2022-03-16T18:00:00",
   },
-  { id: 3, title: 'event 3', start: '2022-03-17T13:00:00', end: '2022-03-20T13:00:00' },
+  {
+    id: 3,
+    title: "event 3",
+    start: "2022-03-17T13:00:00",
+    end: "2022-03-20T13:00:00",
+  },
   {
     id: 4,
-    title: 'event 4',
-    start: '2022-03-16T13:00:00',
-    end: '2022-03-16T18:00:00',
+    title: "event 4",
+    start: "2022-03-16T13:00:00",
+    end: "2022-03-16T18:00:00",
   },
   {
     id: 5,
-    title: 'event 5',
-    start: '2022-03-16T13:00:00',
-    end: '2022-03-16T18:00:00',
+    title: "event 5",
+    start: "2022-03-16T13:00:00",
+    end: "2022-03-16T18:00:00",
   },
   {
     id: 6,
-    title: 'event 6',
-    start: '2022-03-16T13:00:00',
-    end: '2022-03-16T18:00:00',
+    title: "event 6",
+    start: "2022-03-16T13:00:00",
+    end: "2022-03-16T18:00:00",
   },
   {
     id: 7,
-    title: 'event 7',
-    start: '2022-03-16T13:00:00',
-    end: '2022-03-16T18:00:00',
+    title: "event 7",
+    start: "2022-03-16T13:00:00",
+    end: "2022-03-16T18:00:00",
   },
   {
     id: 8,
-    title: 'event 8',
-    start: '2022-03-16T13:00:00',
-    end: '2022-03-16T18:00:00',
+    title: "event 8",
+    start: "2022-03-16T13:00:00",
+    end: "2022-03-16T18:00:00",
   },
 ];
 
 function FullCalendarApp(props) {
-    // const dateClickHandler = (e) => {
-    //     console.log(e)
-    
-    //     const date = events.filter((item) => item.start.includes(e.dateStr))
-    //     console.log(date)
-    //     const title = []
-    //     const startTime = [];  //time.push(item.split("T")[1])
-    //     const endTime = []
-    //     const totalData = {}
-    //     date.map((item, index) => {
-    //         title.push(item.title)
-    //         startTime.push(item.start.split("T")[1])
-    //         endTime.push(item.end.split("T")[1])
-    //     })
-    //     console.log(title,startTime, endTime)
+  // const dateClickHandler = (e) => {
+  //     console.log(e)
 
-    // }
+  //     const date = events.filter((item) => item.start.includes(e.dateStr))
+  //     console.log(date)
+  //     const title = []
+  //     const startTime = [];  //time.push(item.split("T")[1])
+  //     const endTime = []
+  //     const totalData = {}
+  //     date.map((item, index) => {
+  //         title.push(item.title)
+  //         startTime.push(item.start.split("T")[1])
+  //         endTime.push(item.end.split("T")[1])
+  //     })
+  //     console.log(title,startTime, endTime)
 
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = (e) => console.log(e.event);
-    
-    const handleClose = () => setOpen(false);
+  // }
+  const [todoEvent, setTodoEvent] = React.useState({
+    id: 0,
+    title: "",
+    start: "",
+    end: "",
+  });
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = (e) => {
+    if (e.event === undefined || null) {
+      setTodoEvent({});
+    } else {
+      setTodoEvent({
+        id: e.event.id,
+        title: e.event.title,
+        start: e.event.start,
+        end: e.event.end,
+      });
+    }
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
 
   return (
     <>
-    <Grid margin="auto" width="900px" position= "relative">
-      <FullCalendar
-      height= '900px'
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        dayMaxEvents= {true} //일정 많아지면 +버튼 생성
-        headerToolbar={{
-            right: 'prev,next today',
-            center: 'title',
-          left: 'dayGridMonth,timeGridWeek,timeGridDay',
-        }}
-        
-        // customButtons={{
-        //   new: {
-        //     text: 'new',
-        //     onclick: () => console.log('new event'),
-        //   },
-        // }}
+      <Grid margin="auto" width="900px" position="relative">
+        <FullCalendar
+          height="900px"
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          dayMaxEvents={true} //일정 많아지면 +버튼 생성
+          headerToolbar={{
+            right: "prev,next today",
+            center: "title",
+            left: "dayGridMonth,timeGridWeek,timeGridDay",
+          }}
+          // customButtons={{
+          //   new: {
+          //     text: 'new',
+          //     onclick: () => console.log('new event'),
+          //   },
+          // }}
 
-        events={events}
-        // editable="true" //드래그로 일정 변경 가능
-        // dateClick={dateClickHandler}
-        // eventClick={(e) => console.log(e.event.title)}
-        eventClick={handleOpen}
-        locale="ko" //한국어변경
-      />
+          events={events}
+          // editable="true" //드래그로 일정 변경 가능
+          // dateClick={dateClickHandler}
+          // eventClick={(e) => console.log(e.event.title)}
+          eventClick={handleOpen}
+          locale="ko" //한국어변경
+        />
 
         <Write onClick={handleOpen}></Write>
-        <CalendarModal open={open} handleClose={handleClose}></CalendarModal>
-        
-    </Grid>
+        <CalendarModal
+          open={open}
+          handleClose={handleClose}
+          todoEvent={todoEvent}
+        ></CalendarModal>
+      </Grid>
     </>
   );
 }
 
-
 const Write = styled.div`
-    width: 55px;
-    height: 55px;
-    background-color: rgb(255, 228, 228);
-    border-radius: 100%;
-    position: absolute;
-    bottom: -3px;
-    right: -3px;
-    cursor: pointer;
-    z-index: 1;
+  width: 55px;
+  height: 55px;
+  background-color: rgb(255, 228, 228);
+  border-radius: 100%;
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  cursor: pointer;
+  z-index: 1;
 `;
 
 export default FullCalendarApp;
-
-
