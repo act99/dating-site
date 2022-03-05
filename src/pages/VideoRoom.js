@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import UserVideoComponent from "./UserVideoComponent";
 import "../App.css";
 
-const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
+const OPENVIDU_SERVER_URL = "https://chat.d8pzcrluuw660.amplifyapp.com/";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 class VideoRoom extends Component {
