@@ -25,4 +25,5 @@ export const apis = {
   // ** 영상채팅
   getRooms: () => api.get(`/chat/rooms`),
   createRooms: (name) => api.post(`/chat/room`, name),
+  // enterRoom: (roomId) => api.get(`/room/enter/${roomId}`),
 };

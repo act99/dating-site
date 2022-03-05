@@ -18,6 +18,7 @@ import { actionCreators as chatActions } from "../redux/modules/chatReducer";
 import { sendingMessage } from "../shared/SocketFunc";
 import url from "../shared/url";
 import { history } from "../redux/store";
+import { apis } from "../shared/api";
 const tokenCheck = document.cookie;
 const token = tokenCheck.split("=")[1];
 
@@ -129,14 +130,14 @@ const ChattingRoom = () => {
   const peerConnectionConfig = {
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" },
-      { urls: "stun:stun1.l.google.com:19302" },
-      { urls: "stun:stun2.l.google.com:19302" },
-      { urls: "stun:stun3.l.google.com:19302" },
-      { urls: "stun:stun4.l.google.com:19302" },
-      { urls: "stun:stun01.sipphone.com" },
-      { urls: "stun:stun.ekiga.net" },
-      { urls: "stun:stun.fwdnet.net" },
-      { urls: "stun:stun.ideasip.com" },
+      // { urls: "stun:stun1.l.google.com:19302" },
+      // { urls: "stun:stun2.l.google.com:19302" },
+      // { urls: "stun:stun3.l.google.com:19302" },
+      // { urls: "stun:stun4.l.google.com:19302" },
+      // { urls: "stun:stun01.sipphone.com" },
+      // { urls: "stun:stun.ekiga.net" },
+      // { urls: "stun:stun.fwdnet.net" },
+      // { urls: "stun:stun.ideasip.com" },
       // { urls: "stun:stun.stunprotocol.org:3478" },
       // { urls: "stun:stun.l.google.com:19302" }, // P2P 연결의 중계서버는 구글에서 무료로 지원하는 Google STUN 서버
     ],
@@ -152,7 +153,7 @@ const ChattingRoom = () => {
   const mediaConstraints = {
     video: true,
     // video: { width: { exact: 640 }, height: { exact: 480 } },
-    audio: true,
+    audio: false,
   };
   const videoButtonOff = () => {
     localVideoTracks = localStream.getVideoTracks();
@@ -224,6 +225,7 @@ const ChattingRoom = () => {
       myPeerConnection = new RTCPeerConnection(peerConnectionConfig);
       myPeerConnection.onicecandidate = handleICECandidateEvent;
       myPeerConnection.ontrack = handleTrackEvent;
+      console.log(myPeerConnection);
     } catch (error) {
       console.log(error);
     }
@@ -272,7 +274,7 @@ const ChattingRoom = () => {
     stop();
   };
 
-  async function handleTrackEvent(event) {
+  function handleTrackEvent(event) {
     try {
       log("Track Event: set stream to remote video element");
       remoteVideoRef.current.srcObject = event.streams[0];
@@ -432,6 +434,8 @@ const ChattingRoom = () => {
   }
 
   React.useEffect(() => {
+    // apis.enterRoom(roomId).then((res) => console.log(res.data));
+
     chattingRef.current.scrollIntoView({ behavior: "smooth" });
     setSendMessage({ ...sendMessage, roomId: roomId, sender: nickname });
     created();

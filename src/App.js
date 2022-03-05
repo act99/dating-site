@@ -16,6 +16,8 @@ import Container from "@mui/material/Container";
 import Room2 from "./components/Room2";
 import CreateRoom from "./pages/CreateRoom";
 import Story from "./pages/Story";
+import Test from "./pages/Test";
+import VideoChat from "./pages/VideoChat";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -37,9 +39,9 @@ const App = () => {
             {/* 채팅방 입장 */}
             <Route path="/rooms" exact component={Rooms} />
             <Route path="/rooms/:roomId" exact component={ChattingRoom} />
-            <Route path="/test" exact component={Room2} />
             <Route path="/createroom" exact component={CreateRoom} />
             <Route path="/story" exact component={Story} />
+            <Route path="/videochat" exact component={VideoChat} />
             <Route path="*" exact component={NotFound} />
           </Switch>
         </ConnectedRouter>
