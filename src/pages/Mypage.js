@@ -11,7 +11,8 @@ import momentPlugin from '@fullcalendar/moment'
 import { toMoment, toMomentDuration } from '@fullcalendar/moment';
 import React from 'react';
 import styled from "styled-components";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CalendarModal from '../components/CalendarModal';
 
 const events = [
   {
@@ -60,23 +61,29 @@ const events = [
 ];
 
 function FullCalendarApp(props) {
-    const dateClickHandler = (e) => {
-        console.log(e)
+    // const dateClickHandler = (e) => {
+    //     console.log(e)
     
-        const date = events.filter((item) => item.start.includes(e.dateStr))
-        console.log(date)
-        const title = []
-        const startTime = [];  //time.push(item.split("T")[1])
-        const endTime = []
-        const totalData = {}
-        date.map((item, index) => {
-            title.push(item.title)
-            startTime.push(item.start.split("T")[1])
-            endTime.push(item.end.split("T")[1])
-        })
-        console.log(title,startTime, endTime)
+    //     const date = events.filter((item) => item.start.includes(e.dateStr))
+    //     console.log(date)
+    //     const title = []
+    //     const startTime = [];  //time.push(item.split("T")[1])
+    //     const endTime = []
+    //     const totalData = {}
+    //     date.map((item, index) => {
+    //         title.push(item.title)
+    //         startTime.push(item.start.split("T")[1])
+    //         endTime.push(item.end.split("T")[1])
+    //     })
+    //     console.log(title,startTime, endTime)
 
-    }
+    // }
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = (e) => console.log(e.event);
+    
+    const handleClose = () => setOpen(false);
+
   return (
     <>
     <Grid margin="auto" width="900px" position= "relative">
@@ -100,34 +107,16 @@ function FullCalendarApp(props) {
 
         events={events}
         // editable="true" //드래그로 일정 변경 가능
-        dateClick={dateClickHandler}
-        eventClick={(e) => console.log(e.event.title)}
+        // dateClick={dateClickHandler}
+        // eventClick={(e) => console.log(e.event.title)}
+        eventClick={handleOpen}
         locale="ko" //한국어변경
       />
 
-        <Write>test</Write>
+        <Write onClick={handleOpen}></Write>
+        <CalendarModal open={open} handleClose={handleClose}></CalendarModal>
+        
     </Grid>
-      {/* <Grid>
-
-      <div>
-        <label for="todo">할일</label><br></br>
-        <input required id="todo" type="text" placeholder="오늘의 목표는?" />
-      </div>
-
-      <div>
-          <label>시작일</label>
-          <Datetime locale="ko"/>
-        </div>
-
-        <div>
-          <label>종료일</label>
-          <Datetime locale="ko"/>
-        </div>
-
-        <button>추가하기</button>
-
-
-        </Grid> */}
     </>
   );
 }
