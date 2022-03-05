@@ -1,11 +1,14 @@
 import React from "react";
 
-const VideoUI = () => {
-  return (
-    <div>
-      <h3>비디오</h3>
-    </div>
-  );
+const VideoUI = (props) => {
+  const videoRef = React.useRef();
+
+  React.useEffect(() => {
+    props.streamManager.addVideoElement(videoRef.current);
+    return () => {};
+  }, [props.streamManager.addVideoElement(videoRef.current)]);
+
+  return <video autoPlay={true} ref={this.videoRef} />;
 };
 
 export default VideoUI;

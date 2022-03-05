@@ -22,6 +22,13 @@ const Home = () => {
       >
         방 만들기
       </button>
+      <button
+        onClick={() => {
+          history.push("/videoroom");
+        }}
+      >
+        화상채팅 테스트용 버튼
+      </button>
     </div>
   );
 };
