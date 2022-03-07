@@ -7,7 +7,7 @@ const Text = (props) => {
 
     const { cursor } = props
 
-    const { margin, padding, padding_left, width, } = props
+    const { margin, margin_left, margin_top, margin_bottom, padding, padding_left, width, } = props
 
     const { is_flex, flex_direction,flex_wrap, align_items, justify_content, vertical_align } = props
 
@@ -35,6 +35,9 @@ const Text = (props) => {
         B_bottom,
 
         margin,
+        margin_left,
+        margin_top,
+        margin_bottom,
         padding,
         padding_left,
         width,
@@ -71,6 +74,9 @@ Text.defaultProps ={
     B_bottom : null,
 
     margin : null,
+    margin_left : null,
+    margin_top : null,
+    margin_bottom : null,
     padding_left : null,
     padding : null,
     width: 'auto',
@@ -104,6 +110,9 @@ const P = styled.div`
     padding-left : ${(props) => props.padding_left};
 
     margin : ${(props) => props.margin};
+    margin-left : ${(props) => props.margin_left};
+    margin-top : ${(props) => props.margin_top};
+    margin-bottom : ${(props) => props.margin_bottom};
 
     width : ${(props) => props.width};
     
